@@ -76,7 +76,7 @@ if [ "$ADD_LUCI_APP" = "true" ]; then
   LUCI_APP_TMP="$(mktemp -d)/luci-app"
 
   if ! clone "$LUCI_APP_URL" "$LUCI_APP_TMP" main; then
-    echo "::error::qwe3017/luci-app 拉取失败，natmode / pon-status 会被 defconfig 剔除"
+    echo "::error::qwe3017/luci-app 拉取失败， pon-status 会被 defconfig 剔除"
     exit 1
   fi
 
@@ -302,7 +302,7 @@ if [ -n "$(ls -A "$PKG_DIR" 2>/dev/null)" ]; then
   REQUIRED=""
   [ "$ADD_AIROHA_NPU" = "true" ] && REQUIRED="$REQUIRED luci-app-airoha-npu"
   if [ "$ADD_LUCI_APP" = "true" ]; then
-    REQUIRED="$REQUIRED luci-app-natmode luci-app-pon-status"
+    REQUIRED="$REQUIRED luci-app-pon-status"
   fi
   HARD_MISS=""
   for r in $REQUIRED; do
