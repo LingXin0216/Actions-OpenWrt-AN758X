@@ -191,11 +191,6 @@ if [ "$ADD_SMARTDNS" = "true" ]; then
   clone https://github.com/pymumu/smartdns "$PKG_DIR/smartdns" master
 fi
 
-# --- theme glass ---
-if [ "$ADD_GLASS" = "true" ]; then
-  clone https://github.com/pymumu/luci-app-smartdns "$PKG_DIR/luci-app-smartdns" master
-  clone https://github.com/pymumu/smartdns "$PKG_DIR/smartdns" master
-fi
 
 # ---------------------------------------------------------
 # 校验：默认开启的两个插件必须拉到，否则 defconfig 会静默剔除，
@@ -297,7 +292,11 @@ if [ -n "$(ls -A "$PKG_DIR" 2>/dev/null)" ]; then
   echo "luci.mk: $([ -f feeds/luci/luci.mk ] && echo '✓' || echo '✗ 缺失（luci app 无法解析）')"
   echo "tmp/.packageinfo 包总数: $(grep -c '^Package: ' tmp/.packageinfo 2>/dev/null || echo 0)"
   echo "=========================================="
-
+# =======================================================
+# 强制剔除不需要的 natmode 插件配置
+# =======================================================
+sed -i '/CONFIG_PACKAGE_luci-app-natmode/d' .config
+  
   # 必装插件（config 里是 =y 的那几个）必须进索引，否则 defconfig 会静默剔除
   REQUIRED=""
   [ "$ADD_AIROHA_NPU" = "true" ] && REQUIRED="$REQUIRED luci-app-airoha-npu"
