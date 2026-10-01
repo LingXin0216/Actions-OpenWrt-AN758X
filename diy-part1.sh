@@ -30,7 +30,7 @@ ADD_LUCKY=false        # luci-app-lucky（DDNS + socat）
 ADD_TAILSCALE=false    # luci-app-tailscale
 ADD_OPENLIST=false     # luci-app-openlist2（alist/openlist 挂载）
 ADD_SMARTDNS=false     # luci-app-smartdns
-
+ADD_GLASS_THEME=true   # rchen14b/luci-theme-glass （Glass 主题包）
 ADD_LUCI_APP=true       # qwe3017/luci-app 仓库（monorepo）
                         #   ├─ luci-app-natmode     NAT 类型三选一（网络 → NAT 类型）
                         #   └─ luci-app-pon-status  PON 光模块卡片（概览页「系统」下一格）
@@ -139,6 +139,16 @@ if [ "$ADD_AIROHA_NPU" = "true" ]; then
   echo "   po/zh_Hans: $(ls -1 "$PODIR/zh_Hans/" 2>/dev/null | tr '\n' ' ')"
 fi
 
+# =====================================================================
+# 拉取 Glass 主题（rchen14b/luci-theme-glass）
+# =====================================================================
+if [ "$ADD_GLASS_THEME" = "true" ]; then
+    echo "正在拉取 Glass 主题..."
+    rm -rf "$PKG_DIR/luci-theme-glass"
+    git clone --depth=1 https://github.com/rchen14b/luci-theme-glass.git "$PKG_DIR/luci-theme-glass"
+    echo "✅ Glass 主题拉取完成"
+fi
+
 # --- passwall ---
 if [ "$ADD_PASSWALL" = "true" ]; then
   clone https://github.com/xiaorouji/openwrt-passwall-packages "$PKG_DIR/openwrt-passwall-packages" main
@@ -177,6 +187,12 @@ fi
 
 # --- smartdns ---
 if [ "$ADD_SMARTDNS" = "true" ]; then
+  clone https://github.com/pymumu/luci-app-smartdns "$PKG_DIR/luci-app-smartdns" master
+  clone https://github.com/pymumu/smartdns "$PKG_DIR/smartdns" master
+fi
+
+# --- theme glass ---
+if [ "$ADD_GLASS" = "true" ]; then
   clone https://github.com/pymumu/luci-app-smartdns "$PKG_DIR/luci-app-smartdns" master
   clone https://github.com/pymumu/smartdns "$PKG_DIR/smartdns" master
 fi
