@@ -175,4 +175,7 @@ if [ -f .config ]; then
   fi
 fi
 
+# 激活 Glass 主题
+echo "CONFIG_PACKAGE_luci-theme-glass=y" >> .config
+
 echo "🎉 diy-part2.sh 执行完毕"
